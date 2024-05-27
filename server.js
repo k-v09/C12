@@ -28,11 +28,15 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-function wail ({name}, area) {
-  db.query(`INSERT INTO ${area} (name) VALUES (${{name}})`),
-            db.query(`SELECT * FROM ${area}`, function (err, results) {
-              console.log(results);
-            })
+function wailDep ({dept_name}) {
+  let sad = `INSERT INTO departments (name) VALUES ('${dept_name}')`;
+  db.query(sad, function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted");
+  });
+  db.query('SELECT * FROM departments', function (err, results) {
+    console.log(results);
+  })
 }
 
 function cry({options}) {
@@ -67,10 +71,23 @@ function cry({options}) {
               message: "What department would you like to add?"
             }
           ]).then( sorryVro => {
-            wail(sorryVro, 'departments');
+            wailDep(sorryVro);
           })
           break;
         case 'role':
+          let q = db.query(db.query('SELECT * FROM departments', function (err, results) {
+            return results;
+          }))
+          // add departments to prompt for adding the dept_id
+          inquirer.prompt([
+            {
+              type: 'input',
+              name: 'role_name',
+              message: "What role would you like to add?"
+            }
+          ]).then( sorryVro => {
+            wailDep(sorryVro);
+          })
           break;
         case 'employee':
           break;
