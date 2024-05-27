@@ -1,0 +1,17 @@
+{
+    "name": "12-challenge",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.17.1",
+        "inquirer": "^8.2.6",
+        "mysql2": "^3.9.7"
+    }
+}
