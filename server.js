@@ -38,6 +38,16 @@ function wailDep ({dept_name}) {
     console.log(results);
   })
 }
+function wailRol({role_dept, role_name}) {
+  let sad = `INSERT INTO roles (name, dept_id) VALUES ('${role_name}')`;
+  db.query(sad, function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted");
+  });
+  db.query('SELECT * FROM roles', function (err, results) {
+    console.log(results);
+  })
+}
 
 function cry({options}) {
   options = options.split(" ")
@@ -78,15 +88,26 @@ function cry({options}) {
           let q = db.query(db.query('SELECT * FROM departments', function (err, results) {
             return results;
           }))
-          // add departments to prompt for adding the dept_id
+          let dpts = {};
+          let dpt = [];
+          for (let i in q) {
+            dpts[i["name"]] = i["id"];
+            dpt.push(i['name']);
+          }
           inquirer.prompt([
+            {
+              type: 'list',
+              name: 'role_dept',
+              message: 'What department would you like to add to?',
+              choices: dpt
+            },
             {
               type: 'input',
               name: 'role_name',
               message: "What role would you like to add?"
             }
           ]).then( sorryVro => {
-            wailDep(sorryVro);
+            wailRol(sorryVro);
           })
           break;
         case 'employee':
