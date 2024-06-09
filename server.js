@@ -38,8 +38,9 @@ function wailDep ({dept_name}) {
     console.log(results);
   })
 }
-function wailRol({role_dept, role_name}) {
-  let sad = `INSERT INTO roles (name, dept_id) VALUES ('${role_name}')`;
+function wailRol({role_dept, role_name}, thingy) {
+  let dept = thingy[role_dept];
+  let sad = `INSERT INTO roles (name, dept_id) VALUES ('${role_name}', '${dept})'`;
   db.query(sad, function (err, result) {
     if (err) throw err;
     console.log("1 record inserted");
@@ -85,11 +86,13 @@ function cry({options}) {
           })
           break;
         case 'role':
-          let q = db.query(db.query('SELECT * FROM departments', function (err, results) {
+          const q = db.query('SELECT * FROM departments', function (err, results) {
+            console.log(err, results);
             return results;
-          }))
+          })
           let dpts = {};
           let dpt = [];
+          console.log(dpts, dpt);
           for (let i in q) {
             dpts[i["name"]] = i["id"];
             dpt.push(i['name']);
@@ -107,7 +110,7 @@ function cry({options}) {
               message: "What role would you like to add?"
             }
           ]).then( sorryVro => {
-            wailRol(sorryVro);
+            wailRol(sorryVro, dpt);
           })
           break;
         case 'employee':
@@ -140,4 +143,3 @@ function p() {
   })
 }
 p();
-
